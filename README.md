@@ -23,7 +23,8 @@ A 5 year sample size is also likely too small to draw any meaningful conclusions
 
 ```python
 from grouped import aggregate_multiple_spreadsheets
-from visualization import plot_results
+from visualization import plot_results,plot_scatter 
+
 
 def extract_sheet_id(url):
     start = url.find('/d/') + 3
@@ -39,8 +40,12 @@ with open('spreadsheet_links/spreadsheets_spl.txt', 'r') as f:
                 for line in f 
                 if line.strip()]
 
-spl_results = aggregate_multiple_spreadsheets(sheet_ids)
-plot_results(spl_results, 'SPL Win Percentage by Price (2016-2025)')
+# Get both grouped results and raw data
+spl_results, spl_raw = aggregate_multiple_spreadsheets(sheet_ids)
+
+# Create both visualizations
+plot_results(spl_results, 'SPL Win Percentage by Price Range (2016-2025)')
+plot_scatter(spl_raw, 'SPL Individual Win Percentages vs Price (2016-2025)')
 ```
 
 
@@ -50,7 +55,7 @@ plot_results(spl_results, 'SPL Win Percentage by Price (2016-2025)')
 
 
     
-    SPL Win Percentage by Price (2016-2025):
+    SPL Win Percentage by Price Range (2016-2025):
     3000: 43.6%
     3001-5000: 47.9%
     5001-10000: 50.9%
@@ -60,13 +65,19 @@ plot_results(spl_results, 'SPL Win Percentage by Price (2016-2025)')
     
 
 
+    
+![png](README_files/README_2_2.png)
+    
+
+
+
 ```python
 with open('spreadsheet_links/spreadsheets_scl.txt', 'r') as f:
     sheet_ids = [extract_sheet_id(line.strip()) 
                 for line in f 
                 if line.strip()]
 
-scl_results = aggregate_multiple_spreadsheets(sheet_ids)
+scl_results, scl_raw = aggregate_multiple_spreadsheets(sheet_ids)
 plot_results(scl_results, 'SCL Win Percentage by Price (2021-2025)')
 ```
 
@@ -92,25 +103,6 @@ with open('spreadsheet_links/spreadsheets_uupl.txt', 'r') as f:
     uupl_sheet_ids = [extract_sheet_id(line.strip()) 
                 for line in f 
                 if line.strip()]
-uupl_results = aggregate_multiple_spreadsheets(uupl_sheet_ids)
+uupl_results, uupl_raw = aggregate_multiple_spreadsheets(uupl_sheet_ids)
 plot_results(uupl_results, 'UUPL Win Percentage by Price (2020-2025)')
 ```
-
-    ['1FvKxEzomLGD2eAHvp5fOHpH_NRJeJrXHIw7Mg8mIdEg', '1H1RBUL5wfuBjPOMW6FG3S0BHT58jPV-gtV7Vt4LnZYI', '1eJRkmYTg8K3ddKO98pdqQqD9pTb2nZlvei-0dAqG6ow', '1z0KW3HKt17X_RUd1GBOcAKMMKbqyEbo6Qk57uOgsSOo', '1RtBBR7OnMA-cujWgEd39aB1zAS_npzI4mHEZ8jmOL24']
-    
-
-
-    
-![png](README_files/README_4_1.png)
-    
-
-
-    
-    UUPL Win Percentage by Price (2020-2025):
-    3000: 40.9%
-    3001-5000: 44.8%
-    5001-10000: 51.8%
-    10001-15000: 54.3%
-    15001-20000: 45.8%
-    20001+: 58.4%
-    
