@@ -7,8 +7,12 @@ def aggregate_multiple_spreadsheets(sheet_ids):
     
     Args:
         sheet_ids (list): List of Google Sheet IDs to process
+        
+    Returns:
+        tuple: (grouped_results, raw_data) where raw_data contains individual price/percentage pairs
     """
     combined_records = defaultdict(lambda: {'wins': 0, 'total': 0})
+    raw_data = []  # List to store individual price/percentage pairs
     
     for sheet_id in sheet_ids:
         original_sheet_id = get_spreadsheet_data.__defaults__[0]
@@ -22,22 +26,28 @@ def aggregate_multiple_spreadsheets(sheet_ids):
         
         records = calculate_records_by_price(data)
         
-        # Combine records
+        # Store individual records before combining
+        for price, stats in records.items():
+            if stats['total'] > 0:  # Only include players with matches
+                percentage = (stats['wins'] / stats['total']) * 100
+                raw_data.append((price, percentage))
+                if price == 3000:  # Print only entries where price is 3000
+                    print(f"Price 3000: {percentage}%")
+        # Combine records for grouped analysis
         for price, stats in records.items():
             combined_records[price]['wins'] += stats['wins']
             combined_records[price]['total'] += stats['total']
         
-        # Restore original sheet_id
         get_spreadsheet_data.__defaults__ = (original_sheet_id,)
     
-    # Calculate overall percentages
+    # Calculate overall percentages for groups
     percentages = {
         price: (stats['wins'] / stats['total']) * 100 
         for price, stats in combined_records.items()
     }
     
-    # Group into ranges and return results
-    return group_by_price_ranges(percentages)
+    # Return both grouped results and raw data
+    return group_by_price_ranges(percentages), raw_data
 
 if __name__ == "__main__":
     def extract_sheet_id(url):
@@ -46,11 +56,11 @@ if __name__ == "__main__":
         end = url.find('/', start)
         return url[start:end]
 
-    with open('spreadsheet_links/spreadsheets_uupl.txt', 'r') as f:
+    with open('spreadsheet_links/spreadsheets_spl.txt', 'r') as f:
         sheet_ids = [extract_sheet_id(line.strip()) 
                     for line in f 
                     if line.strip()]
-    combined_results = aggregate_multiple_spreadsheets(sheet_ids)
+    combined_results, raw_data = aggregate_multiple_spreadsheets(sheet_ids)
     
     # Add matplotlib imports
     import matplotlib.pyplot as plt

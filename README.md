@@ -45,7 +45,7 @@ spl_results, spl_raw = aggregate_multiple_spreadsheets(sheet_ids)
 
 # Create both visualizations
 plot_results(spl_results, 'SPL Win Percentage by Price Range (2016-2025)')
-plot_scatter(spl_raw, 'SPL Individual Win Percentages vs Price (2016-2025)')
+plot_scatter(spl_raw, 'SPL Season Win Percentages vs Price (2016-2025)')
 ```
 
 
