@@ -1,7 +1,7 @@
 import pandas as pd
 from collections import defaultdict
 
-def get_spreadsheet_data(sheet_id="1aBskkibF1216tcVJBbdMIptr7eFONa5kcpDmLd5Qmlw"):
+def get_spreadsheet_data(sheet_id="1FvKxEzomLGD2eAHvp5fOHpH_NRJeJrXHIw7Mg8mIdEg"):
     data = None
     # different sheets have different column names
     for sheet_name in ["Overall%20MVP", "Overall"]:
@@ -9,13 +9,13 @@ def get_spreadsheet_data(sheet_id="1aBskkibF1216tcVJBbdMIptr7eFONa5kcpDmLd5Qmlw"
             url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
             df = pd.read_csv(url)
             
-
             # for some reason pandas doesn't detect the price column correctly, but only on certain sheets
             if 'Unnamed: 2' in df.columns:
                 df = df.rename(columns={'Unnamed: 2': 'Price '})
+            if 'Unnamed: 3' in df.columns:
+                df = df.rename(columns={'Unnamed: 3': 'Price '})
             
-            
-            required_columns = ['Price ', 'Cost ', 'Cost:']
+            required_columns = ['Price ', 'Cost ', 'Cost:', 'Price:']
             if not any(col in df.columns for col in required_columns):
                 continue
                 
@@ -37,6 +37,8 @@ def get_spreadsheet_data(sheet_id="1aBskkibF1216tcVJBbdMIptr7eFONa5kcpDmLd5Qmlw"
                 price_col = 'Cost '
             elif 'Cost:' in row.index:
                 price_col = 'Cost:'
+            elif 'Price:' in row.index:
+                price_col = 'Price:'
             else:
                 raise Exception("Could not find Price or Cost column")
                 
