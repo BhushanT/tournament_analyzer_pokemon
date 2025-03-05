@@ -45,7 +45,7 @@ plot_results(spl_results, 'SPL Win Percentage by Price (2016-2025)')
 
 
     
-![png](results_files/results_2_0.png)
+![png](README_files/README_2_0.png)
     
 
 
@@ -72,7 +72,7 @@ plot_results(scl_results, 'SCL Win Percentage by Price (2021-2025)')
 
 
     
-![png](results_files/results_3_0.png)
+![png](README_files/README_3_0.png)
     
 
 
@@ -101,7 +101,7 @@ plot_results(uupl_results, 'UUPL Win Percentage by Price (2020-2025)')
 
 
     
-![png](results_files/results_4_1.png)
+![png](README_files/README_4_1.png)
     
 
 
