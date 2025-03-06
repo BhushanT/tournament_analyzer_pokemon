@@ -31,8 +31,6 @@ def aggregate_multiple_spreadsheets(sheet_ids):
             if stats['total'] > 0:  # Only include players with matches
                 percentage = (stats['wins'] / stats['total']) * 100
                 raw_data.append((price, percentage))
-                if price == 3000:  # Print only entries where price is 3000
-                    print(f"Price 3000: {percentage}%")
         # Combine records for grouped analysis
         for price, stats in records.items():
             combined_records[price]['wins'] += stats['wins']
